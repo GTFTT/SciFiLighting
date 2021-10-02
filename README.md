@@ -1,9 +1,9 @@
 # SciFiLighting
 Code for Sci fi Backlight.
-Main file is IR_DesktopBackLight.ino, name your fоlder like that after cloning the repoitory.
+Main file is SciFiLighting.ino, name your fоlder like that after cloning the repoitory(if it is not named properly).
 # How to upload code into arduino UNO R3:
  - Download all files
- - Rename folder to IR_DesktopBackLight
+ - Rename folder to SciFiLighting if needed
  - Open main file
  - Select your arduino type and corresponding port
  - Upload
