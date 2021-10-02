@@ -7,10 +7,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-CRGB pacificaLeds[NUM_LEDS];
+// CRGB pacificaLeds[NUM_LEDS];
 
 void pacificaSetup() {
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(pacificaLeds, NUM_LEDS)
+  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
   FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
 }
@@ -79,7 +79,7 @@ void pacifica_loop()
   sCIStart4 -= (deltams2 * beatsin88(257,4,6));
 
   // Clear out the LED array to a dim background blue-green
-  fill_solid( pacificaLeds, NUM_LEDS, CRGB( 2, 6, 10));
+  fill_solid( globalLedsArr, NUM_LEDS, CRGB( 2, 6, 10));
 
   // Render each of four layers, with different scales and speeds, that vary over time
   pacifica_one_layer( pacifica_palette_1, sCIStart1, beatsin16( 3, 11 * 256, 14 * 256), beatsin8( 10, 70, 130), 0-beat16( 301) );
@@ -108,7 +108,7 @@ void pacifica_one_layer( CRGBPalette16& p, uint16_t cistart, uint16_t wavescale,
     uint16_t sindex16 = sin16( ci) + 32768;
     uint8_t sindex8 = scale16( sindex16, 240);
     CRGB c = ColorFromPalette( p, sindex8, bri, LINEARBLEND);
-    pacificaLeds[i] += c;
+    globalLedsArr[i] += c;
   }
 }
 
@@ -121,11 +121,11 @@ void pacifica_add_whitecaps()
   for( uint16_t i = 0; i < NUM_LEDS; i++) {
     uint8_t threshold = scale8( sin8( wave), 20) + basethreshold;
     wave += 7;
-    uint8_t l = pacificaLeds[i].getAverageLight();
+    uint8_t l = globalLedsArr[i].getAverageLight();
     if( l > threshold) {
       uint8_t overage = l - threshold;
       uint8_t overage2 = qadd8( overage, overage);
-      pacificaLeds[i] += CRGB( overage, overage2, qadd8( overage2, overage2));
+      globalLedsArr[i] += CRGB( overage, overage2, qadd8( overage2, overage2));
     }
   }
 }
@@ -134,8 +134,8 @@ void pacifica_add_whitecaps()
 void pacifica_deepen_colors()
 {
   for( uint16_t i = 0; i < NUM_LEDS; i++) {
-    pacificaLeds[i].blue = scale8( pacificaLeds[i].blue,  145); 
-    pacificaLeds[i].green= scale8( pacificaLeds[i].green, 200); 
-    pacificaLeds[i] |= CRGB( 2, 5, 7);
+    globalLedsArr[i].blue = scale8( globalLedsArr[i].blue,  145); 
+    globalLedsArr[i].green= scale8( globalLedsArr[i].green, 200); 
+    globalLedsArr[i] |= CRGB( 2, 5, 7);
   }
 }

@@ -1,12 +1,12 @@
 // Pride2015
 // Animated, ever-changing rainbows.
 // by Mark Kriegsman
-CRGB prideLeds[NUM_LEDS];
+// CRGB prideLeds[NUM_LEDS];
 
 
 void pride2015Setup() {
   // tell FastLED about the LED strip configuration
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(prideLeds, NUM_LEDS)
+  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS)
     .setCorrection(TypicalLEDStrip)
     .setDither(BRIGHTNESS < 255);
 }
@@ -58,6 +58,6 @@ void pride()
     uint16_t pixelnumber = i;
     pixelnumber = (NUM_LEDS-1) - pixelnumber;
     
-    nblend( prideLeds[pixelnumber], newcolor, 64);
+    nblend( globalLedsArr[pixelnumber], newcolor, 64);
   }
 }

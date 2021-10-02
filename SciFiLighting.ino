@@ -1,12 +1,18 @@
 #include<IRremote.h>
 #include "FastLED.h"
 
+#include <SPI.h>
+#include <nRF24L01.h>
+#include <RF24.h>
+#include <Packer.h>
+
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
 #endif
 
 //#define FASTLED_ALLOW_INTERRUPTS 0
 
+#define LISTEN_RADIO        true
 #define NUM_LEDS            6 //Quantity of leds
 #define LED_TYPE            WS2811
 #define COLOR_ORDER         GRB
@@ -15,13 +21,21 @@
 #define MAX_POWER_MILLIAMPS 500
 #define BrightnessRate      51 //How many to increase/decrease brightness if corresponding button was pressed
 
-String currentMode = "TurnOff"; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
-const int delayPeriod = 100; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
-int BRIGHTNESS = 255; //Used by all light modes.
+void messageReceiveHandler(char arr[], int size);
 
-int recv_pin = 2;
-IRrecv receiver(recv_pin);
-decode_results results;
+CRGB                        globalLedsArr[NUM_LEDS]; // Define the array of leds which will be used by all other algorithms
+
+Packer                      packer;
+RF24                        radio(7, 8); // CE, CSN
+const byte address[6] =     "00001";
+
+String currentMode =        "TurnOff"; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
+const int delayPeriod =     100; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
+int BRIGHTNESS =            255; //Used by all light modes.
+
+int recv_pin =              2;
+IRrecv                      receiver(recv_pin);
+decode_results              results;
 
 void setup()
 {
@@ -36,16 +50,23 @@ void setup()
   turnOnBacklight();
   
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   receiver.enableIRIn();
+
+  packer.onMessageReady(messageReceiveHandler);
+  packer.setDebug(true);
+  radio.begin();
+  radio.setPALevel(RF24_PA_MIN);
+  radio.openReadingPipe(0, address);
+  radio.startListening();
 }
 
-void loop()
-{
+void loop() {
 
-  sleep(0);
+  sleep(0); //Run method which have to work in paralel with other programs
+  listenRF(); //Temporarly, listen here
   
-   runModeAlgorithm(); //Run currntly working algorithm(run loop method of currently working algorithm)
+  runModeAlgorithm(); //Run currntly working algorithm(run loop method of currently working algorithm)
 }
 
 void turnOnBacklight() {
@@ -100,7 +121,7 @@ bool listenIR() {
  
   // ********  added &results (a place to store the key code)
   if (receiver.decode(&results)){
-    Serial.print("HEX command value: ");
+    Serial.print(F("HEX command value: "));
     Serial.println(results.value, HEX);
     receiver.resume(); //Continue receiving
     
@@ -110,4 +131,45 @@ bool listenIR() {
   }
   
   return newCommand;
+}
+
+/* Listen IR if there is a command. true if new command detected */
+bool listenRF() {
+  bool newCommandReceived = false;
+  if(!LISTEN_RADIO) return false;
+  Serial.println((String) F("Free: ") + freeRAM());
+
+  if (radio.available()) {
+    char text[32] = "";
+    radio.read(&text, sizeof(text));
+    builtPack built = packer.getBuiltPack(text, sizeof(text));
+    packer.printPack(built);
+    packer.pushPack(packer.restorePack(built));
+    newCommandReceived = true; //Not always
+  }
+  Serial.println(F("Listening ..."));
+  delay(5);
+  
+  return newCommandReceived;
+}
+
+/*Handler called when package was received via RF communication*/
+void messageReceiveHandler(char arr[], int size) {
+  Serial.print(F("Received pack: "));
+  for(int i = 0; i < size; i++) {
+    Serial.print(arr[i]);
+  }
+  Serial.print(F("HEX command value: "));
+  // Serial.println(results.value, HEX);
+  // mapper(results.value);//Call mapper to perform operation
+  Serial.println();
+}
+
+int freeRAM() {
+  int value = 0;
+  int result = 0;
+  extern int *__brkval;
+  extern int __heap_start;
+  result = (int)&value - ((int)__brkval == 0 ? (int)&__heap_start : (int)__brkval);
+  return result;
 }

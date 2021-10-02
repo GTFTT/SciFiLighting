@@ -6,14 +6,14 @@
 // animations patterns and have them automatically rotate.
 //
 // -Mark Kriegsman, December 2014
-CRGB demoReel100Leds[NUM_LEDS];
+// CRGB demoReel100Leds[NUM_LEDS];
 
 #define demoReel100_BRIGHTNESS             96
 #define demoReel100_FRAMES_PER_SECOND      120
 
 void demoReel100Setup() {
   // tell FastLED about the LED strip configuration
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(demoReel100Leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
   // set master brightness control
   FastLED.setBrightness(demoReel100_BRIGHTNESS);
@@ -29,10 +29,10 @@ uint8_t gHue = 0; // rotating "base color" used by many of the patterns
   
 void demoReel100Loop()
 {
-  // Call the current pattern function once, updating the 'demoReel100Leds' array
+  // Call the current pattern function once, updating the 'globalLedsArr' array
   gPatterns[gCurrentPatternNumber]();
 
-  // send the 'demoReel100Leds' array out to the actual LED strip
+  // send the 'globalLedsArr' array out to the actual LED strip
   FastLED.show();  
   // insert a delay to keep the framerate modest
   FastLED.delay(1000/demoReel100_FRAMES_PER_SECOND); 
@@ -53,7 +53,7 @@ void nextPattern()
 void rainbow() 
 {
   // FastLED's built-in rainbow generator
-  fill_rainbow( demoReel100Leds, NUM_LEDS, gHue, 7);
+  fill_rainbow( globalLedsArr, NUM_LEDS, gHue, 7);
 }
 
 void rainbowWithGlitter() 
@@ -66,24 +66,24 @@ void rainbowWithGlitter()
 void addGlitter( fract8 chanceOfGlitter) 
 {
   if( random8() < chanceOfGlitter) {
-    demoReel100Leds[ random16(NUM_LEDS) ] += CRGB::White;
+    globalLedsArr[ random16(NUM_LEDS) ] += CRGB::White;
   }
 }
 
 void confetti() 
 {
   // random colored speckles that blink in and fade smoothly
-  fadeToBlackBy( demoReel100Leds, NUM_LEDS, 10);
+  fadeToBlackBy( globalLedsArr, NUM_LEDS, 10);
   int pos = random16(NUM_LEDS);
-  demoReel100Leds[pos] += CHSV( gHue + random8(64), 200, 255);
+  globalLedsArr[pos] += CHSV( gHue + random8(64), 200, 255);
 }
 
 void sinelon()
 {
   // a colored dot sweeping back and forth, with fading trails
-  fadeToBlackBy( demoReel100Leds, NUM_LEDS, 20);
+  fadeToBlackBy( globalLedsArr, NUM_LEDS, 20);
   int pos = beatsin16( 13, 0, NUM_LEDS-1 );
-  demoReel100Leds[pos] += CHSV( gHue, 255, 192);
+  globalLedsArr[pos] += CHSV( gHue, 255, 192);
 }
 
 void bpm()
@@ -93,16 +93,16 @@ void bpm()
   CRGBPalette16 palette = PartyColors_p;
   uint8_t beat = beatsin8( BeatsPerMinute, 64, 255);
   for( int i = 0; i < NUM_LEDS; i++) { //9948
-    demoReel100Leds[i] = ColorFromPalette(palette, gHue+(i*2), beat-gHue+(i*10));
+    globalLedsArr[i] = ColorFromPalette(palette, gHue+(i*2), beat-gHue+(i*10));
   }
 }
 
 void juggle() {
   // eight colored dots, weaving in and out of sync with each other
-  fadeToBlackBy( demoReel100Leds, NUM_LEDS, 20);
+  fadeToBlackBy( globalLedsArr, NUM_LEDS, 20);
   byte dothue = 0;
   for( int i = 0; i < 8; i++) {
-    demoReel100Leds[beatsin16( i+7, 0, NUM_LEDS-1 )] |= CHSV(dothue, 200, 255);
+    globalLedsArr[beatsin16( i+7, 0, NUM_LEDS-1 )] |= CHSV(dothue, 200, 255);
     dothue += 32;
   }
 }

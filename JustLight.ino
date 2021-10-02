@@ -1,13 +1,13 @@
 // Define the array of leds
-CRGB justLightLeds[NUM_LEDS];
+// CRGB justLightLeds[NUM_LEDS];
 
 void justLightSetup() {
-    FastLED.addLeds<WS2811, DATA_PIN, GRB>(justLightLeds, NUM_LEDS);
+    FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 void justLightLoop() { 
   for(int i = 0; i < NUM_LEDS; i++) {
-    justLightLeds[i] = CRGB::White;
+    globalLedsArr[i] = CRGB::White;
   }
   
   FastLED.show();
