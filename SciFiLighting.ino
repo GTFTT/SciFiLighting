@@ -5,6 +5,7 @@
 #include <nRF24L01.h>
 #include <RF24.h>
 #include <Packer.h>
+#include <ArduinoJson.h>
 
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
@@ -42,6 +43,10 @@ void setup()
   //Disable light if it was enabled
   turnOffSetup();
   turnOffLoop();
+
+  // It's important to set the color correction for your LED strip here,
+  // so that colors can be more accurately rendered through the 'temperature' profiles
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection( TypicalSMD5050 );
  
   // 3 second delay for boot recovery, and a moment of silence
   // sanity check delay - allows reprogramming if accidently blowing power w/leds
@@ -54,7 +59,7 @@ void setup()
   receiver.enableIRIn();
 
   packer.onMessageReady(messageReceiveHandler);
-  packer.setDebug(true);
+  packer.setDebug(false);
   radio.begin();
   radio.setPALevel(RF24_PA_MIN);
   radio.openReadingPipe(0, address);
@@ -62,6 +67,18 @@ void setup()
 }
 
 void loop() {
+  StaticJsonDocument<64> doc;
+
+  char arr[] = "{\"command\":1234}";
+
+  deserializeJson(doc, arr);
+  // JsonObject obj = doc.as<JsonObject>();
+  Serial.print(F("\nResult: "));
+  int test = doc["command"];
+  Serial.println(test);
+  serializeJson(doc, Serial);
+
+  delay(1000);
 
   sleep(0); //Run method which have to work in paralel with other programs
   listenRF(); //Temporarly, listen here
@@ -137,32 +154,42 @@ bool listenIR() {
 bool listenRF() {
   bool newCommandReceived = false;
   if(!LISTEN_RADIO) return false;
-  Serial.println((String) F("Free: ") + freeRAM());
+  // Serial.println((String) F("Free: ") + freeRAM());
 
   if (radio.available()) {
     char text[32] = "";
     radio.read(&text, sizeof(text));
     builtPack built = packer.getBuiltPack(text, sizeof(text));
-    packer.printPack(built);
+    // packer.printPack(built);
     packer.pushPack(packer.restorePack(built));
     newCommandReceived = true; //Not always
   }
-  Serial.println(F("Listening ..."));
-  delay(5);
+  // Serial.println(F("Listening ..."));
+  // delay(5);
   
   return newCommandReceived;
 }
 
 /*Handler called when package was received via RF communication*/
 void messageReceiveHandler(char arr[], int size) {
-  Serial.print(F("Received pack: "));
+  Serial.print(F("Received message: "));
   for(int i = 0; i < size; i++) {
     Serial.print(arr[i]);
   }
-  Serial.print(F("HEX command value: "));
+
+  DynamicJsonDocument doc(256);
+
+  deserializeJson(doc, arr, size);
+  JsonObject obj = doc.as<JsonObject>();
+  Serial.print(F("\nResult: "));
+  float test = obj["command"];
+  Serial.println(test);
+  serializeJson(doc, Serial);
+  // Serial.println(obj.containsKey("command"));
+  // Serial.print(F("HEX command value: "));
   // Serial.println(results.value, HEX);
   // mapper(results.value);//Call mapper to perform operation
-  Serial.println();
+  // Serial.println();
 }
 
 int freeRAM() {

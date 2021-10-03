@@ -2,7 +2,7 @@
 // CRGB turnOffLeds[NUM_LEDS];
 
 void turnOffSetup() {
-    FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
+    // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 void turnOffLoop() { 

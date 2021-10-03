@@ -2,7 +2,7 @@
 // CRGB blinkLeds[NUM_LEDS];
 
 void blinkSetup() {
-    FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
+    // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 void blinkLoop() { 

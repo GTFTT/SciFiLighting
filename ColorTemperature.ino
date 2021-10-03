@@ -41,9 +41,9 @@
 int ColorTemperature_BRIGHTNESS = 160;
 
 void colorTemperatureSetup() {
-  // It's important to set the color correction for your LED strip here,
-  // so that colors can be more accurately rendered through the 'temperature' profiles
-  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection( TypicalSMD5050 );
+  // // It's important to set the color correction for your LED strip here,
+  // // so that colors can be more accurately rendered through the 'temperature' profiles
+  // FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection( TypicalSMD5050 );
   FastLED.setBrightness( ColorTemperature_BRIGHTNESS );
 }
 

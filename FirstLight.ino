@@ -9,7 +9,7 @@
 
 // This function sets up the ledsand tells the controller about them
 void firstLightSetup() {
-  FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
+  // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 // This function runs over and over, and is where you do the magic to light

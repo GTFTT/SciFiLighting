@@ -4,9 +4,9 @@
 */
 void runModeAlgorithm() {
 
-  if(currentMode == "twinkleFox") twinkleFoxLoop();
-  if(currentMode == "Pacifica") pacificaLoop();
-  if(currentMode == "Pride2015") pride2015Loop();
+  // if(currentMode == "twinkleFox") twinkleFoxLoop();
+  // if(currentMode == "Pacifica") pacificaLoop();
+  // if(currentMode == "Pride2015") pride2015Loop();
   if(currentMode == "FirstLight") firstLightLoop();
   if(currentMode == "Blink") blinkLoop();
   if(currentMode == "ColorTemperature") colorTemperatureLoop();

@@ -10,8 +10,8 @@
 // CRGB pacificaLeds[NUM_LEDS];
 
 void pacificaSetup() {
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS)
-        .setCorrection( TypicalLEDStrip );
+  // FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS)
+  //       .setCorrection( TypicalLEDStrip );
   FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
 }
 

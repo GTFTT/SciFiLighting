@@ -2,7 +2,7 @@
 // CRGB justBlueLeds[NUM_LEDS];
 
 void justBlueSetup() {
-    FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
+    // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 void justBlueLoop() { 

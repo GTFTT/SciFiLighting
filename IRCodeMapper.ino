@@ -28,23 +28,23 @@ void mapper(long long int code) {
         currentMode = "JustLight";
         break;
         
-      case 0xFF30CF:
-        Serial.println(F("Pressed 1: Twinkle fox"));
-        twinkleFoxSetup();
-        currentMode = "twinkleFox";
-        break;
+      // case 0xFF30CF:
+      //   Serial.println(F("Pressed 1: Twinkle fox"));
+      //   twinkleFoxSetup();
+      //   currentMode = "twinkleFox";
+      //   break;
         
-      case 0xFF18E7:
-        Serial.println(F("Pressed 2: Pacifica"));
-        pacificaSetup();
-        currentMode = "Pacifica";
-        break;
+      // case 0xFF18E7:
+      //   Serial.println(F("Pressed 2: Pacifica"));
+      //   pacificaSetup();
+      //   currentMode = "Pacifica";
+      //   break;
         
-      case 0xFF7A85:
-        Serial.println(F("Pressed 3: Pride2015"));
-        pride2015Setup();
-        currentMode = "Pride2015";
-        break;
+      // case 0xFF7A85:
+      //   Serial.println(F("Pressed 3: Pride2015"));
+      //   pride2015Setup();
+      //   currentMode = "Pride2015";
+      //   break;
         
       case 0xFF10EF:
         Serial.println(F("Pressed 4: First light"));

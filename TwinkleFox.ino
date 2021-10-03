@@ -40,8 +40,8 @@ CRGBPalette16 gTargetPalette;
 
 void twinkleFoxSetup() {
   FastLED.setMaxPowerInVoltsAndMilliamps( VOLTS, MAX_POWER_MILLIAMPS);
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(twinkleFoxLeds, NUM_LEDS)
-    .setCorrection(TypicalLEDStrip);
+  // FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(twinkleFoxLeds, NUM_LEDS)
+  //   .setCorrection(TypicalLEDStrip);
 
   chooseNextColorPalette(gTargetPalette);
 }
