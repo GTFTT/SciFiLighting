@@ -13,6 +13,8 @@
 
 //#define FASTLED_ALLOW_INTERRUPTS 0
 
+// #define ARDUINOJSON_USE_LONG_LONG 1 //Allow to use long in arduino json
+
 #define LISTEN_RADIO        true
 #define NUM_LEDS            6 //Quantity of leds
 #define LED_TYPE            WS2811
@@ -29,6 +31,7 @@ CRGB                        globalLedsArr[NUM_LEDS]; // Define the array of leds
 Packer                      packer;
 RF24                        radio(7, 8); // CE, CSN
 const byte address[6] =     "00001";
+StaticJsonDocument<64>      doc; //Document for decoding data from rf messages
 
 String currentMode =        "TurnOff"; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
 const int delayPeriod =     100; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
@@ -67,21 +70,8 @@ void setup()
 }
 
 void loop() {
-  StaticJsonDocument<64> doc;
-
-  char arr[] = "{\"command\":1234}";
-
-  deserializeJson(doc, arr);
-  // JsonObject obj = doc.as<JsonObject>();
-  Serial.print(F("\nResult: "));
-  int test = doc["command"];
-  Serial.println(test);
-  serializeJson(doc, Serial);
-
-  delay(1000);
-
+  listenRF();
   sleep(0); //Run method which have to work in paralel with other programs
-  listenRF(); //Temporarly, listen here
   
   runModeAlgorithm(); //Run currntly working algorithm(run loop method of currently working algorithm)
 }
@@ -109,7 +99,6 @@ void decreaseBrightness() {
 */
 bool sleep(int sleepTime) {
   int countOfPeriods = sleepTime / delayPeriod;
-  int remainder = sleepTime % delayPeriod;
 
   int i = 0;
   bool receivedNewCommand = false;
@@ -121,12 +110,7 @@ bool sleep(int sleepTime) {
     i++;
   } while(i < countOfPeriods);
   
-  if(receivedNewCommand) {
-    return true;
-  } else {
-//    delay(remainder); //Delay for remaining miliseconds
-    return false;
-  }
+  return receivedNewCommand;
 }
 
 /*
@@ -150,53 +134,28 @@ bool listenIR() {
   return newCommand;
 }
 
-/* Listen IR if there is a command. true if new command detected */
-bool listenRF() {
-  bool newCommandReceived = false;
+/* Listen IR if there is a pack. When message will be generated, callback will be callde*/
+void listenRF() {
   if(!LISTEN_RADIO) return false;
-  // Serial.println((String) F("Free: ") + freeRAM());
 
   if (radio.available()) {
     char text[32] = "";
     radio.read(&text, sizeof(text));
     builtPack built = packer.getBuiltPack(text, sizeof(text));
-    // packer.printPack(built);
     packer.pushPack(packer.restorePack(built));
-    newCommandReceived = true; //Not always
   }
-  // Serial.println(F("Listening ..."));
-  // delay(5);
   
-  return newCommandReceived;
 }
 
-/*Handler called when package was received via RF communication*/
+/*Handler called when message was received via RF communication*/
 void messageReceiveHandler(char arr[], int size) {
-  Serial.print(F("Received message: "));
-  for(int i = 0; i < size; i++) {
-    Serial.print(arr[i]);
+  if(size > 40) {
+    Serial.println(F("Message too big, aborting"));
+    return;
   }
-
-  DynamicJsonDocument doc(256);
-
+  
   deserializeJson(doc, arr, size);
-  JsonObject obj = doc.as<JsonObject>();
-  Serial.print(F("\nResult: "));
-  float test = obj["command"];
-  Serial.println(test);
-  serializeJson(doc, Serial);
-  // Serial.println(obj.containsKey("command"));
-  // Serial.print(F("HEX command value: "));
-  // Serial.println(results.value, HEX);
-  // mapper(results.value);//Call mapper to perform operation
-  // Serial.println();
-}
+  long code = doc["code"];
 
-int freeRAM() {
-  int value = 0;
-  int result = 0;
-  extern int *__brkval;
-  extern int __heap_start;
-  result = (int)&value - ((int)__brkval == 0 ? (int)&__heap_start : (int)__brkval);
-  return result;
+  mapper(code);//Call mapper to perform operation
 }
