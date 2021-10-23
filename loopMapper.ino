@@ -4,16 +4,16 @@
 */
 void runModeAlgorithm() {
 
-  // if(currentMode == "twinkleFox") twinkleFoxLoop();
-  // if(currentMode == "Pacifica") pacificaLoop();
-  // if(currentMode == "Pride2015") pride2015Loop();
-  if(currentMode == "FirstLight") firstLightLoop();
-  if(currentMode == "Blink") blinkLoop();
-  if(currentMode == "ColorTemperature") colorTemperatureLoop();
-  if(currentMode == "DemoReel100") demoReel100Loop();
-  if(currentMode == "JustLight") justLightLoop();
-  if(currentMode == "TurnOff") turnOffLoop();
-  if(currentMode == "JustBlue") justBlueLoop();
-  if(currentMode == "JustGreen") justGreenLoop();
+  // if(currentMode == LightModes::TwinkleFox) twinkleFoxLoop();
+  // if(currentMode == LightModes::Pacifica) pacificaLoop();
+  // if(currentMode == LightModes::Pride2015) pride2015Loop();
+  if(currentMode == LightModes::FirstLight) firstLightLoop();
+  if(currentMode == LightModes::Blink) blinkLoop();
+  if(currentMode == LightModes::ColorTemperature) colorTemperatureLoop();
+  if(currentMode == LightModes::DemoReel100) demoReel100Loop();
+  if(currentMode == LightModes::JustLight) justLightLoop();
+  if(currentMode == LightModes::TurnOff) turnOffLoop();
+  if(currentMode == LightModes::JustBlue) justBlueLoop();
+  if(currentMode == LightModes::JustGreen) justGreenLoop();
   
 }

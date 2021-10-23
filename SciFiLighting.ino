@@ -13,8 +13,6 @@
 
 //#define FASTLED_ALLOW_INTERRUPTS 0
 
-// #define ARDUINOJSON_USE_LONG_LONG 1 //Allow to use long in arduino json
-
 #define LISTEN_RADIO        true
 #define NUM_LEDS            6 //Quantity of leds
 #define LED_TYPE            WS2811
@@ -27,15 +25,28 @@
 void messageReceiveHandler(char arr[], int size);
 
 CRGB                        globalLedsArr[NUM_LEDS]; // Define the array of leds which will be used by all other algorithms
+enum class LightModes {
+  TurnOff,
+  JustLight,
+  JustBlue,
+  JustGreen,
+  Blink,
+  FirstLight,
+  DemoReel100,
+  ColorTemperature,
+  Pride2015,
+  Pacifica,
+  TwinkleFox
+};
 
 Packer                      packer;
 RF24                        radio(7, 8); // CE, CSN
 const byte address[6] =     "00001";
 StaticJsonDocument<64>      doc; //Document for decoding data from rf messages
 
-String currentMode =        "TurnOff"; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
 const int delayPeriod =     100; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
 int BRIGHTNESS =            255; //Used by all light modes.
+LightModes currentMode =    LightModes::TurnOff; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
 
 int recv_pin =              2;
 IRrecv                      receiver(recv_pin);
@@ -43,17 +54,9 @@ decode_results              results;
 
 void setup()
 {
-  //Disable light if it was enabled
-  turnOffSetup();
-  turnOffLoop();
-
   // It's important to set the color correction for your LED strip here,
   // so that colors can be more accurately rendered through the 'temperature' profiles
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection( TypicalSMD5050 );
- 
-  // 3 second delay for boot recovery, and a moment of silence
-  // sanity check delay - allows reprogramming if accidently blowing power w/leds
-  delay( 1000 ); // power-up safety delay
 
   turnOnBacklight();
   
@@ -77,7 +80,7 @@ void loop() {
 }
 
 void turnOnBacklight() {
-  currentMode = "JustLight";
+  currentMode = LightModes::JustLight;
   justLightSetup();
 }
 
@@ -104,6 +107,7 @@ bool sleep(int sleepTime) {
   bool receivedNewCommand = false;
   //Iterate each loop with period of 100 ms, if new comand received, change current command
   do {
+    // listenRF(); //Enable radio listening
     receivedNewCommand = listenIR();
     if(receivedNewCommand) break;
     delay(delayPeriod);//Delay for one period
@@ -135,7 +139,7 @@ bool listenIR() {
 }
 
 /* Listen IR if there is a pack. When message will be generated, callback will be callde*/
-void listenRF() {
+bool listenRF() {
   if(!LISTEN_RADIO) return false;
 
   if (radio.available()) {
@@ -143,8 +147,11 @@ void listenRF() {
     radio.read(&text, sizeof(text));
     builtPack built = packer.getBuiltPack(text, sizeof(text));
     packer.pushPack(packer.restorePack(built));
+
+    return true;
   }
-  
+
+  return false;
 }
 
 /*Handler called when message was received via RF communication*/
@@ -156,6 +163,8 @@ void messageReceiveHandler(char arr[], int size) {
   
   deserializeJson(doc, arr, size);
   long code = doc["code"];
+  Serial.print(F("Received code via RF:"));
+  Serial.println(code);
 
   mapper(code);//Call mapper to perform operation
 }

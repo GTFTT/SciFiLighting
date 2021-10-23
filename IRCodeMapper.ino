@@ -14,72 +14,71 @@ void mapper(long long int code) {
         Serial.println(F("Pressed Minus: Decrease brightness"));
         decreaseBrightness();
         break;
-
         
       case 0xFFC23D:
         Serial.println(F("Pressed Play/Pause: TurnOff"));
         turnOffSetup();
-        currentMode = "TurnOff";
+        currentMode = LightModes::TurnOff;
         break;
     
       case 0xFF6897:
         Serial.println(F("Pressed 0: Just light"));
         justLightSetup();
-        currentMode = "JustLight";
+        currentMode = LightModes::JustLight;
         break;
         
       // case 0xFF30CF:
       //   Serial.println(F("Pressed 1: Twinkle fox"));
       //   twinkleFoxSetup();
-      //   currentMode = "twinkleFox";
+      //   currentMode = LightModes::TwinkleFox;
       //   break;
         
       // case 0xFF18E7:
       //   Serial.println(F("Pressed 2: Pacifica"));
       //   pacificaSetup();
-      //   currentMode = "Pacifica";
+      //   currentMode = LightModes::Pacifica;
       //   break;
         
       // case 0xFF7A85:
       //   Serial.println(F("Pressed 3: Pride2015"));
       //   pride2015Setup();
-      //   currentMode = "Pride2015";
+      //   currentMode = LightModes::Pride2015;
       //   break;
         
       case 0xFF10EF:
         Serial.println(F("Pressed 4: First light"));
         firstLightSetup();
-        currentMode = "FirstLight";
+        currentMode = LightModes::FirstLight;
         break;
         
       case 0xFF38C7:
         Serial.println(F("Pressed 5: Blink"));
         blinkSetup();
-        currentMode = "Blink";
+        currentMode = LightModes::Blink;
         break;
 
       case 0xFF5AA5:
         Serial.println(F("Pressed 6: Color temperature"));
         colorTemperatureSetup();
-        currentMode = "ColorTemperature";
+        currentMode = LightModes::ColorTemperature;
         break;
 
       case 0xFF42BD:
         Serial.println(F("Pressed 7: Demo reel 100"));
         demoReel100Setup();
-        currentMode = "DemoReel100";
+        currentMode = LightModes::DemoReel100;
         break;
 
       case 0xFF4AB5:
         Serial.println(F("Pressed 8: Just blue"));
         justBlueSetup();
-        currentMode = "JustBlue";
+        currentMode = LightModes::JustBlue;
         break;
 
       case 0xFF52AD:
         Serial.println(F("Pressed 9: Just green"));
         justGreenSetup();
-        currentMode = "JustGreen";
+        currentMode = LightModes::JustGreen;
         break;
   }
 }
