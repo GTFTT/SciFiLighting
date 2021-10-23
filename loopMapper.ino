@@ -5,6 +5,7 @@
 void runModeAlgorithm() {
 
   // if(currentMode == LightModes::TwinkleFox) twinkleFoxLoop();
+  if(currentMode == LightModes::MyMode) myModeLoop();
   if(currentMode == LightModes::Pacifica) pacificaLoop();
   if(currentMode == LightModes::Pride2015) pride2015Loop();
   if(currentMode == LightModes::FirstLight) firstLightLoop();

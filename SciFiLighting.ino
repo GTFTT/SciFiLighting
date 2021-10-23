@@ -22,6 +22,7 @@
 void messageReceiveHandler(char arr[], int size);
 
 CRGB                        globalLedsArr[NUM_LEDS]; // Define the array of leds which will be used by all other algorithms
+// CRGBArray<NUM_LEDS>         globalLedsArr; //This is eqvivalent to previous one, but works for Twinkle fox
 enum class LightModes {
   TurnOff,
   JustLight,
@@ -33,7 +34,8 @@ enum class LightModes {
   ColorTemperature,
   Pride2015,
   Pacifica,
-  TwinkleFox
+  // TwinkleFox
+  MyMode
 };
 
 Packer                      packer;

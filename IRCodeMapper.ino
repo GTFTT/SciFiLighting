@@ -32,6 +32,12 @@ void mapper(long long int code) {
       //   twinkleFoxSetup();
       //   currentMode = LightModes::TwinkleFox;
       //   break;
+
+      case 0xFF30CF:
+        Serial.println(F("Pressed 1: My mode"));
+        myModeSetup();
+        currentMode = LightModes::MyMode;
+        break;
         
       case 0xFF18E7:
         Serial.println(F("Pressed 2: Pacifica"));
