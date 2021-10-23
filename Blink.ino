@@ -1,9 +1,4 @@
 void blinkSetup() {
-  for(int i = 0; i < NUM_LEDS; i++) {
-    globalLedsArr[i] = CRGB::Black;
-  }
-  
-  FastLED.show();
 }
 
 void blinkLoop() { 

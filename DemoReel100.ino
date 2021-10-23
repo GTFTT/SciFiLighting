@@ -12,10 +12,6 @@
 #define demoReel100_FRAMES_PER_SECOND      120
 
 void demoReel100Setup() {
-  // tell FastLED about the LED strip configuration
-  // FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS).setCorrection(TypicalLEDStrip);
-
-  // set master brightness control
   FastLED.setBrightness(demoReel100_BRIGHTNESS);
 }
 

@@ -1,14 +1,8 @@
 // Pride2015
 // Animated, ever-changing rainbows.
 // by Mark Kriegsman
-// CRGB prideLeds[NUM_LEDS];
-
 
 void pride2015Setup() {
-  // tell FastLED about the LED strip configuration
-  // FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(globalLedsArr, NUM_LEDS)
-  //   .setCorrection(TypicalLEDStrip)
-  //   .setDither(BRIGHTNESS < 255);
 }
 
 

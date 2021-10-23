@@ -82,6 +82,15 @@ void turnOnBacklight() {
   justLightSetup();
 }
 
+//Turn off all leds(set black)
+void clearAllLeds() {
+  for(int i = 0; i < NUM_LEDS; i++) {
+    globalLedsArr[i] = CRGB::Black;
+  }
+  
+  FastLED.show();
+}
+
 void increaseBrightness() {
   BRIGHTNESS += BrightnessRate;
   if(BRIGHTNESS > 255) BRIGHTNESS = 255;

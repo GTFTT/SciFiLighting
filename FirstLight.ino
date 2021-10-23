@@ -4,12 +4,7 @@
 // and then how to turn a single pixel white and then off, moving down the line of pixels.
 // 
 
-// This is an array of leds.  One item for each led in your strip.
-// CRGB firstLightLeds[NUM_LEDS];
-
-// This function sets up the ledsand tells the controller about them
 void firstLightSetup() {
-  // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 // This function runs over and over, and is where you do the magic to light

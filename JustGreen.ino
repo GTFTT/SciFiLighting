@@ -1,8 +1,4 @@
-// Define the array of leds
-// CRGB justGreenLeds[NUM_LEDS];
-
 void justGreenSetup() {
-    // FastLED.addLeds<WS2811, DATA_PIN, GRB>(globalLedsArr, NUM_LEDS);
 }
 
 void justGreenLoop() { 
