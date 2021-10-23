@@ -1,7 +1,7 @@
 #define PIXEL_CHANGE_DELAY 50
 #define COLOR_CHANGE_DELAY 50
 
-void myModeSetup() {
+void partyModeSetup() {
   for(int i = 0; i < NUM_LEDS; i++) {
     globalLedsArr[i] = CRGB::Black;
   }
@@ -9,7 +9,7 @@ void myModeSetup() {
   FastLED.show();
 }
 
-void myModeLoop() { 
+void partyModeLoop() { 
   for(int i = 0; i < NUM_LEDS; i++) {
     globalLedsArr[i] = CRGB::Red;
     FastLED.show();

@@ -26,17 +26,11 @@ void mapper(long long int code) {
         justLightSetup();
         currentMode = LightModes::JustLight;
         break;
-        
-      // case 0xFF30CF:
-      //   Serial.println(F("Pressed 1: Twinkle fox"));
-      //   twinkleFoxSetup();
-      //   currentMode = LightModes::TwinkleFox;
-      //   break;
 
       case 0xFF30CF:
-        Serial.println(F("Pressed 1: My mode"));
-        myModeSetup();
-        currentMode = LightModes::MyMode;
+        Serial.println(F("Pressed 1: PartyMode"));
+        partyModeSetup();
+        currentMode = LightModes::PartyMode;
         break;
         
       case 0xFF18E7:

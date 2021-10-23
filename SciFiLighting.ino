@@ -34,8 +34,7 @@ enum class LightModes {
   ColorTemperature,
   Pride2015,
   Pacifica,
-  // TwinkleFox
-  MyMode
+  PartyMode
 };
 
 Packer                      packer;
