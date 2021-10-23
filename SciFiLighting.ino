@@ -107,7 +107,6 @@ bool sleep(int sleepTime) {
   bool receivedNewCommand = false;
   //Iterate each loop with period of 100 ms, if new comand received, change current command
   do {
-    // listenRF(); //Enable radio listening
     receivedNewCommand = listenIR();
     if(receivedNewCommand) break;
     delay(delayPeriod);//Delay for one period
