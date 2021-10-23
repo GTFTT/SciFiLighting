@@ -1,15 +1,12 @@
-#include<IRremote.h>
-#include "FastLED.h"
+#include <IRremote.h>
+//Requires FastLED 3.1 or later; check github for latest code
+#include <FastLED.h>
 
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
 #include <Packer.h>
 #include <ArduinoJson.h>
-
-#if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
-#warning "Requires FastLED 3.1 or later; check github for latest code."
-#endif
 
 //#define FASTLED_ALLOW_INTERRUPTS 0
 
@@ -44,7 +41,7 @@ RF24                        radio(7, 8); // CE, CSN
 const byte address[6] =     "00001";
 StaticJsonDocument<64>      doc; //Document for decoding data from rf messages
 
-const int delayPeriod =     100; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
+const int delayPeriod =     40; //This is used in special sleep functions with build in listener(swiches command if new signal was received)
 int BRIGHTNESS =            255; //Used by all light modes.
 LightModes currentMode =    LightModes::TurnOff; //Is used to define which algorithm to use for scifi backlight, depending on it we use specific algorithm
 

@@ -27,11 +27,11 @@ void mapper(long long int code) {
         currentMode = LightModes::JustLight;
         break;
         
-      case 0xFF30CF:
-        Serial.println(F("Pressed 1: Twinkle fox"));
-        twinkleFoxSetup();
-        currentMode = LightModes::TwinkleFox;
-        break;
+      // case 0xFF30CF:
+      //   Serial.println(F("Pressed 1: Twinkle fox"));
+      //   twinkleFoxSetup();
+      //   currentMode = LightModes::TwinkleFox;
+      //   break;
         
       case 0xFF18E7:
         Serial.println(F("Pressed 2: Pacifica"));
@@ -47,25 +47,25 @@ void mapper(long long int code) {
         
       case 0xFF10EF:
         Serial.println(F("Pressed 4: First light"));
-        // firstLightSetup();
+        firstLightSetup();
         currentMode = LightModes::FirstLight;
         break;
         
       case 0xFF38C7:
         Serial.println(F("Pressed 5: Blink"));
-        // blinkSetup();
+        blinkSetup();
         currentMode = LightModes::Blink;
         break;
 
       case 0xFF5AA5:
         Serial.println(F("Pressed 6: Color temperature"));
-        // colorTemperatureSetup();
+        colorTemperatureSetup();
         currentMode = LightModes::ColorTemperature;
         break;
 
       case 0xFF42BD:
         Serial.println(F("Pressed 7: Demo reel 100"));
-        // demoReel100Setup();
+        demoReel100Setup();
         currentMode = LightModes::DemoReel100;
         break;
 

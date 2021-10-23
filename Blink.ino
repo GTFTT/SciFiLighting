@@ -1,6 +1,3 @@
-// Define the array of leds
-// CRGB blinkLeds[NUM_LEDS];
-
 void blinkSetup() {
   for(int i = 0; i < NUM_LEDS; i++) {
     globalLedsArr[i] = CRGB::Blue;
